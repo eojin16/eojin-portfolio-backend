@@ -4,16 +4,16 @@ from contextlib import asynccontextmanager
 from app.core.config import settings
 from app.api import analytics
 from app.services.database import db_service
-from app.services.redis_service import redis_service
-from app.services.kafka_service import kafka_service
+# from app.services.redis_service import redis_service
+# from app.services.kafka_service import kafka_service
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # 시작 시 실행
     print("🚀 Starting FastAPI backend server...")
     await db_service.connect()
-    await redis_service.connect()
-    await kafka_service.connect()
+    # await redis_service.connect()
+    # await kafka_service.connect()
     print("✅ All services connected!")
     
     yield
@@ -21,8 +21,8 @@ async def lifespan(app: FastAPI):
     # 종료 시 실행
     print("🛑 Shutting down FastAPI backend server...")
     await db_service.disconnect()
-    await redis_service.disconnect()
-    await kafka_service.disconnect()
+    # await redis_service.disconnect()
+    # await kafka_service.disconnect()
     print("✅ All services disconnected!")
 
 app = FastAPI(
@@ -62,8 +62,8 @@ async def health():
     return {
         "status": "healthy",
         "services": {
-            "database": "connected" if db_service.pool else "disconnected",
-            "redis": "connected" if redis_service.redis_client else "disconnected",
-            "kafka": "connected" if kafka_service.producer else "disconnected"
+            "database": "connected" if db_service.connected else "disconnected",
+            # "redis": "connected" if redis_service.redis_client else "disconnected",
+            # "kafka": "connected" if kafka_service.producer else "disconnected"
         }
     }
