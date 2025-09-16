@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: eojin-portfolio-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: eojin-portfolio-db
+          property: connectionString
+      - key: PYTHON_VERSION
+        value: 3.11.5
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: REDIS_URL
+        value: redis://localhost:6379
+      - key: KAFKA_BOOTSTRAP_SERVERS
+        value: localhost:9092

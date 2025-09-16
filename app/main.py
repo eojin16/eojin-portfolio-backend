@@ -62,8 +62,8 @@ async def health():
     return {
         "status": "healthy",
         "services": {
-            "database": "connected",
-            "redis": "connected", 
-            "kafka": "connected"
+            "database": "connected" if db_service.pool else "disconnected",
+            "redis": "connected" if redis_service.redis_client else "disconnected",
+            "kafka": "connected" if kafka_service.producer else "disconnected"
         }
     }
